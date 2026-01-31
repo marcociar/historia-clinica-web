@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Historia Clínica</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>Mi Historia Clínica</h1>
+
+<button onclick="cerrarSesion()">Cerrar sesión</button>
+
+<hr>
+
+<label>Diagnóstico</label><br>
+<textarea id="diagnostico" rows="4" disabled></textarea><br><br>
+
+<label>Observaciones</label><br>
+<textarea id="observaciones" rows="4"></textarea><br><br>
+
+<button onclick="guardarHistoria()">Guardar</button>
+
+<hr>
+
+<h2>Subir estudios / imágenes</h2>
+<input type="file" id="archivo">
+<button onclick="subirArchivo()">Subir</button>
+
+<hr>
+
+<h2>Archivos cargados</h2>
+<ul id="listaArchivos"></ul>
+
+<script src="paciente.js"></script>
+</body>
+</html>
