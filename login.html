@@ -2,18 +2,31 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Login - Historia Clínica</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
 <div class="login-container">
     <h2>Ingreso al Sistema</h2>
+
+    <!-- Selector de tipo de usuario -->
+    <label for="tipo">Ingresar como</label>
+    <select id="tipo">
+        <option value="medico">Médico</option>
+        <option value="paciente">Paciente</option>
+    </select>
+
     <input type="text" id="username" placeholder="Usuario">
     <input type="password" id="password" placeholder="Contraseña">
+
     <button onclick="login()">Ingresar</button>
-    <p id="error"></p>
+
+    <p id="error" class="error"></p>
 </div>
 
-<script src="login.js"></script>
+<script src="login.js?=v999"></script>
 </body>
 </html>
+
+

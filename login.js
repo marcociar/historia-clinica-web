@@ -1,30 +1,58 @@
 
 console.log("login.js cargado");
 
-async function login() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+function login() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const tipo = document.getElementById("tipo").value; // medico | paciente
+    const errorEl = document.getElementById("error");
 
-    console.log("Login:", username, password);
+    errorEl.innerText = "";
 
-    const res = await fetch("login.php", {
+    if (!username || !password) {
+        errorEl.innerText = "Completá usuario y contraseña";
+        return;
+    }
+
+    fetch("login.php", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-    });
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Respuesta del servidor:", data);
 
-    const data = await res.json();
-    console.log(data);
+        if (!data.success) {
+            errorEl.innerText = data.message;
+            return;
+        }
 
-    if (data.success) {
+        // Validar que el rol coincida con el selector
+        if (data.rol !== tipo) {
+            errorEl.innerText = "El rol seleccionado no corresponde al usuario";
+            return;
+        }
+
+        // Redirección
         if (data.rol === "medico") {
             window.location.href = "medico.html";
-        } else {
+        } else if (data.rol === "paciente") {
             window.location.href = "paciente.html";
         }
-    } else {
-        document.getElementById("error").innerText =
-            "Usuario o contraseña incorrectos";
-    }
+    })
+    .catch(err => {
+        console.error(err);
+        errorEl.innerText = "Error al conectar con el servidor";
+    });
 }
+
+
+
+
 
