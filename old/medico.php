@@ -1,3 +1,16 @@
+
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'medico') {
+    header("Location: login.html");
+    exit;
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,6 +30,15 @@
 <button onclick="cargarPacientes()">Cargar pacientes</button>
 
 <ul id="listaPacientes"></ul>
+
+<h3>Nuevo paciente</h3>
+
+<input type="text" id="nombrePaciente" placeholder="Nombre"><br><br>
+<input type="text" id="apellidoPaciente" placeholder="Apellido"><br><br>
+<input type="date" id="fechaNacimiento"><br><br>
+
+<button onclick="crearPaciente()">Crear paciente</button>
+
 
 <hr>
 

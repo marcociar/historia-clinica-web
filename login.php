@@ -1,31 +1,32 @@
 <?php
-session_start(); // 🔴 OBLIGATORIO
 header("Content-Type: application/json");
+session_start();
 
-$conn = new mysqli("localhost", "root", "", "historiaclinicafinal1");
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "message" => "Error de conexión"]);
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    echo json_encode([
+        "success" => false,
+        "message" => "Método no permitido"
+    ]);
     exit;
 }
+
+require "conexion.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
 $username = $data["username"] ?? "";
 $password = $data["password"] ?? "";
 
-$sql = "SELECT username, rol FROM usuarios WHERE username = ? AND password = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $username, $password);
-$stmt->execute();
+$sql = "SELECT * FROM usuarios WHERE username = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$username]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$result = $stmt->get_result();
+if ($user && password_verify($password, $user["password"])) {
 
-if ($result->num_rows === 1) {
-    $user = $result->fetch_assoc();
-
-    // ✅ GUARDAMOS LA SESIÓN
-    $_SESSION['usuario'] = $user['username'];
-    $_SESSION['rol'] = $user['rol'];
+    $_SESSION["id"] = $user["id"];
+    $_SESSION["username"] = $user["username"];
+    $_SESSION["rol"] = $user["rol"];
 
     echo json_encode([
         "success" => true,
@@ -37,6 +38,13 @@ if ($result->num_rows === 1) {
         "message" => "Usuario o contraseña incorrectos"
     ]);
 }
+
+
+
+
+
+
+
 
 
 

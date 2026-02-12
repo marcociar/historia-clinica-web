@@ -1,10 +1,19 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "historiaclinicafinal1");
+$host = "localhost";
+$db = "historiaclinicafinal1";
+$user = "root";
+$pass = "";
 
-if ($conn->connect_error) {
-    die(json_encode([
-        "success" => false,
-        "error" => "Error de conexión"
-    ]));
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$db;charset=utf8",
+        $user,
+        $pass,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+} catch (PDOException $e) {
+    die("Error conexión BD");
 }
+
+
 

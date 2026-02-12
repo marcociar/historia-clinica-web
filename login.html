@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Login - Historia Clínica</title>
-    <link rel="stylesheet" href="styles.css">
+    <script src="login.js?v=1" defer></script>
 </head>
 <body>
 
-<div class="login-container">
-    <h2>Ingreso al Sistema</h2>
+<h2>Ingreso al Sistema</h2>
 
-    <!-- Selector de tipo de usuario -->
-    <label for="tipo">Ingresar como</label>
-    <select id="tipo">
-        <option value="medico">Médico</option>
-        <option value="paciente">Paciente</option>
-    </select>
+<form id="loginForm">
+    <label>Usuario</label><br>
+    <input type="text" id="username" required><br><br>
 
-    <input type="text" id="username" placeholder="Usuario">
-    <input type="password" id="password" placeholder="Contraseña">
+    <label>Contraseña</label><br>
+    <input type="password" id="password" required><br><br>
 
-    <button onclick="login()">Ingresar</button>
+    <button type="submit">Ingresar</button>
+</form>
 
-    <p id="error" class="error"></p>
-</div>
+<p id="mensaje" style="color:red;"></p>
 
-<script src="login.js?=v999"></script>
 </body>
 </html>
+
+
 
 
