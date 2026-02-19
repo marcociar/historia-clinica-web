@@ -33,7 +33,6 @@ $sql_hist = "SELECT * FROM historias_clinicas
 $stmt_hist = $pdo->prepare($sql_hist);
 $stmt_hist->bindParam(":id", $id_paciente, PDO::PARAM_INT);
 $stmt_hist->execute();
-
 $historias = $stmt_hist->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -48,10 +47,10 @@ $historias = $stmt_hist->fetchAll(PDO::FETCH_ASSOC);
 <h2>Historia Clínica</h2>
 
 <p><strong>Paciente:</strong> <?= $paciente["nombre"] ?></p>
+
 <a href="generar_pdf.php?id=<?= $paciente["id"] ?>" target="_blank">
     📄 Descargar PDF
 </a>
-
 
 <hr>
 
@@ -61,15 +60,22 @@ $historias = $stmt_hist->fetchAll(PDO::FETCH_ASSOC);
 
 <h3>Nueva Consulta</h3>
 
-<form action="guardar_historia.php" method="POST">
+<form action="guardar_historia.php" method="POST" enctype="multipart/form-data">
+    
     <input type="hidden" name="id_paciente" value="<?= $paciente["id"] ?>">
 
-    Diagnóstico:<br>
+    <label>Diagnóstico:</label><br>
     <textarea name="diagnostico" required></textarea><br><br>
 
-    Tratamiento:<br>
+    <label>Tratamiento:</label><br>
     <textarea name="tratamiento" required></textarea><br><br>
 
+    <div style="margin-top:15px;">
+        <label><strong>Adjuntar archivo / imagen:</strong></label><br>
+        <input type="file" name="archivo">
+    </div>
+
+    <br>
     <button type="submit">Guardar Historia</button>
 </form>
 
@@ -84,6 +90,7 @@ $historias = $stmt_hist->fetchAll(PDO::FETCH_ASSOC);
 <?php if (count($historias) > 0): ?>
 
     <?php foreach($historias as $historia): ?>
+
         <div style="border:1px solid #ccc; padding:15px; margin-bottom:15px; border-radius:8px;">
             
             <strong>Fecha:</strong> <?= $historia["fecha"] ?><br><br>
@@ -92,41 +99,56 @@ $historias = $stmt_hist->fetchAll(PDO::FETCH_ASSOC);
             <?= nl2br($historia["diagnostico"]) ?><br><br>
 
             <strong>Tratamiento:</strong><br>
-            <?= nl2br($historia["tratamiento"]) ?>
-            
-            
-            <br>Adjuntar archivo / imagen:<br>
-            <input type="file" name="archivo"><br><br>
-            <br><br>
-                <a href="editar_historia.php?id=<?= $historia["id"] ?>&paciente=<?= $paciente["id"] ?>">
-                    ✏️ Editar
-                </a>
+            <?= nl2br($historia["tratamiento"]) ?><br><br>
+
+            <!-- ========================= -->
+            <!-- ARCHIVOS ADJUNTOS -->
+            <!-- ========================= -->
+
+            <?php
+            $sql_archivos = "SELECT * FROM archivos_historia WHERE id_historia = :id";
+            $stmt_archivos = $pdo->prepare($sql_archivos);
+            $stmt_archivos->bindParam(":id", $historia["id"]);
+            $stmt_archivos->execute();
+            $archivos = $stmt_archivos->fetchAll(PDO::FETCH_ASSOC);
+            ?>
+
+            <?php if ($archivos): ?>
+                <strong>Archivos adjuntos:</strong><br>
+
+                <?php foreach($archivos as $archivo): ?>
+
+                    <?php
+                    $ruta = "../uploads/historias/" . $archivo["archivo"];
+                    $extension = strtolower(pathinfo($ruta, PATHINFO_EXTENSION));
+                    ?>
+
+                    <?php if(in_array($extension, ['jpg','jpeg','png','gif'])): ?>
+                        <img src="<?= $ruta ?>" width="200"><br>
+                    <?php else: ?>
+                        <a href="<?= $ruta ?>" target="_blank">
+                            📎 <?= $archivo["nombre_archivo"] ?>
+                        </a><br>
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+
+                <br>
+            <?php endif; ?>
+
+            <!-- BOTONES -->
+            <a href="editar_historia.php?id=<?= $historia["id"] ?>&paciente=<?= $paciente["id"] ?>">
+                ✏️ Editar
+            </a>
             <br>
-                <a href="eliminar_historia.php?id=<?= $historia["id"] ?>&paciente=<?= $paciente["id"] ?>"
-                onclick="return confirm('¿Seguro que deseas eliminar esta historia clínica?');">
-                🗑️ Eliminar
-                </a>
-    <?php
-    $sql_archivos = "SELECT * FROM archivos_historia WHERE id_historia = :id";
-    $stmt_archivos = $pdo->prepare($sql_archivos);
-    $stmt_archivos->bindParam(":id", $historia["id"]);
-    $stmt_archivos->execute();
-    $archivos = $stmt_archivos->fetchAll(PDO::FETCH_ASSOC);
-    ?>
 
-    <?php if ($archivos): ?>
-        <strong>Archivos adjuntos:</strong><br>
-        <?php foreach($archivos as $archivo): ?>
-            <a href="../uploads/historias/<?= $archivo["archivo"] ?>" target="_blank">
-                📎 <?= $archivo["nombre_archivo"] ?>
-            </a><br>
-        <?php endforeach; ?>
-    <?php endif; ?>
-
-
-
+            <a href="eliminar_historia.php?id=<?= $historia["id"] ?>&paciente=<?= $paciente["id"] ?>"
+               onclick="return confirm('¿Seguro que deseas eliminar esta historia clínica?');">
+               🗑️ Eliminar
+            </a>
 
         </div>
+
     <?php endforeach; ?>
 
 <?php else: ?>
@@ -138,3 +160,4 @@ $historias = $stmt_hist->fetchAll(PDO::FETCH_ASSOC);
 
 </body>
 </html>
+

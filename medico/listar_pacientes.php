@@ -37,7 +37,16 @@ $pacientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <a href="cargar_historia.php?id=<?= $fila["id"] ?>">
                     📝 Cargar Historia
                 </a>
+
+                |
+
+                <a href="eliminar_paciente.php?id=<?= $fila["id"] ?>"
+                onclick="return confirm('¿Seguro que querés eliminar este paciente y TODAS sus historias?')"
+                style="color:red;">
+                🗑 Eliminar
+                </a>
             </td>
+
         </tr>
     <?php endforeach; ?>
 

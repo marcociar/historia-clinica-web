@@ -4,24 +4,29 @@
     <meta charset="UTF-8">
     <title>Login - Historia Clínica</title>
     <script src="login.js?v=1" defer></script>
+    <link rel="stylesheet" href="css/estilos.css">
+
 </head>
 <body>
 
-<h2>Ingreso al Sistema</h2>
+<div class="container">
+    <h2>Ingreso al Sistema</h2>
 
-<form id="loginForm">
-    <label>Usuario</label><br>
-    <input type="text" id="username" required><br><br>
+    <form id="loginForm">
+        <label>Usuario</label>
+        <input type="text" id="username" required>
 
-    <label>Contraseña</label><br>
-    <input type="password" id="password" required><br><br>
+        <label>Contraseña</label>
+        <input type="password" id="password" required>
 
-    <button type="submit">Ingresar</button>
-</form>
+        <button type="submit">Ingresar</button>
+    </form>
 
-<p id="mensaje" style="color:red;"></p>
+    <p id="mensaje" style="color:red;"></p>
+</div>
 
 </body>
+
 </html>
 
 
