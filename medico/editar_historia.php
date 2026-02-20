@@ -67,7 +67,7 @@ if ($archivos):
 
     <div style="margin-bottom:10px;">
         📎 
-        <a href="../uploads/historias/<?= $archivo['archivo'] ?>" target="_blank">
+        <a href="../uploads/<?= $archivo['archivo'] ?>" target="_blank">
             <?= $archivo['nombre_archivo'] ?>
         </a>
 

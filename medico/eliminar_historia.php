@@ -20,7 +20,7 @@ $archivos = $stmt_archivos->fetchAll(PDO::FETCH_ASSOC);
 // ==========================
 
 foreach ($archivos as $archivo) {
-    $ruta = "../uploads/historias/" . $archivo["archivo"];
+    $ruta = "../uploads/" . $archivo["archivo"];
     if (file_exists($ruta)) {
         unlink($ruta);
     }

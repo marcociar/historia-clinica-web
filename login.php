@@ -25,6 +25,17 @@ try {
         $_SESSION["id"] = $user["id"];
         $_SESSION["username"] = $user["username"];
         $_SESSION["rol"] = $user["rol"];
+        $_SESSION["id_paciente"] = $user["id_paciente"]; // 🔥 NUEVO
+
+            // 🔥 LOG DE ACCESO
+        $ip = $_SERVER["REMOTE_ADDR"];
+
+        $log = $pdo->prepare("
+            INSERT INTO logs_acceso (usuario_id, rol, ip)
+            VALUES (?, ?, ?)
+        ");
+
+        $log->execute([$user["id"], $user["rol"], $ip]);
 
         echo json_encode([
             "success" => true,

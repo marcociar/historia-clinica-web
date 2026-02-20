@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ":id_historia" => $id_historia
     ]);
 
-    header("Location: panel_paciente.php");
-    exit;
+   echo "ok";
 }
 

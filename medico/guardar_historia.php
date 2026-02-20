@@ -40,11 +40,11 @@ if (isset($_FILES["archivo"]) && $_FILES["archivo"]["error"] == 0) {
     // Crear nombre único
     $nombre_unico = time() . "_" . $nombre_original;
 
-    $ruta_destino = "../uploads/historias/" . $nombre_unico;
+    $ruta_destino = "../uploads/" . $nombre_unico;
 
     // Crear carpeta si no existe
-    if (!file_exists("../uploads/historias/")) {
-        mkdir("../uploads/historias/", 0777, true);
+    if (!file_exists("../uploads/")) {
+        mkdir("../uploads/", 0777, true);
     }
 
     if (move_uploaded_file($tmp, $ruta_destino)) {
